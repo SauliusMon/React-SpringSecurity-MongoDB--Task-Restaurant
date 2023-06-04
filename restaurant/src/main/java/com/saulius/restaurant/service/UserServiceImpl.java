@@ -11,9 +11,11 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService{
 
+    public static User user = new User("Username", "useris123", "Name", "Email", "Role");
+
     @Override
     public Optional<User> getUserByUsername (String username) {
-        return Optional.of(new User("Username", "Password", "Name", "Email", "Role"));
+        return Optional.of(user);
     }
 
     @Override
