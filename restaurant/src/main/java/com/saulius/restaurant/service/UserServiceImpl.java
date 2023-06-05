@@ -1,21 +1,25 @@
 package com.saulius.restaurant.service;
 
 import com.saulius.restaurant.model.User;
+import com.saulius.restaurant.repo.UserRepository;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Service
 public class UserServiceImpl implements UserService{
 
-    public static User user = new User("Username", "useris123", "Name", "Email", "Role");
+    //public static User user = new User("Username", "useris123", "Name", "Email", "Role");
+
+    private final UserRepository userRepository;
 
     @Override
     public Optional<User> getUserByUsername (String username) {
-        return Optional.of(user);
+        return userRepository.findAll().stream().filter(user -> user.getUsername().equals(username)).findAny();
     }
 
     @Override
@@ -25,12 +29,12 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public boolean hasUserWithUsername(String username) {
-        return true;
+        return userRepository.findAll().stream().anyMatch(user -> user.getUsername().equals(username));
     }
 
     @Override
     public boolean hasUserWithEmail(String email) {
-        return true;
+        return false;
     }
 
     @Override
@@ -40,7 +44,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User saveUser(User user) {
-        return null;
+        return userRepository.save(user);
     }
 
     @Override

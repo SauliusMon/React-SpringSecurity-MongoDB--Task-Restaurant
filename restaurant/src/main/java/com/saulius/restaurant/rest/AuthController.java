@@ -35,7 +35,6 @@ public class AuthController {
     @PostMapping("/authenticate")
     public AuthResponse login(@Valid @RequestBody LoginRequest loginRequest) {
         System.out.println(loginRequest);
-        UserServiceImpl.user.setPassword(passwordEncoder.encode("Password"));
         String token = authenticateAndGetToken(loginRequest.getUsername(), loginRequest.getPassword());
         return new AuthResponse(token);
     }
@@ -49,6 +48,8 @@ public class AuthController {
         if (userService.hasUserWithEmail(signUpRequest.getEmail())) {
             throw new DuplicatedUserInfoException(String.format("Email %s already been used", signUpRequest.getEmail()));
         }
+        System.out.println(signUpRequest);
+
         userService.saveUser(mapSignUpRequestToUser(signUpRequest));
 
         String token = authenticateAndGetToken(signUpRequest.getUsername(), signUpRequest.getPassword());
