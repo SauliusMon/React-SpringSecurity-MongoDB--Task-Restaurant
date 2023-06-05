@@ -19,7 +19,7 @@ class Home extends Component {
             <Grid.Column textAlign='center'>
               <Segment color='violet'>
                 <Statistic>
-                  <Statistic.Value><Icon name='user' color='grey' />1000+</Statistic.Value>
+                  <Statistic.Value><Icon name='user' color='grey' />10000+</Statistic.Value>
                   <Statistic.Label>Users</Statistic.Label>
                 </Statistic>
               </Segment>
@@ -27,7 +27,7 @@ class Home extends Component {
             <Grid.Column textAlign='center'>
               <Segment color='violet'>
                 <Statistic>
-                  <Statistic.Value><Icon name='utensils' color='grey' />10000+</Statistic.Value>
+                  <Statistic.Value><Icon name='utensils' color='grey' />500000+</Statistic.Value>
                   <Statistic.Label>Orders</Statistic.Label>
                 </Statistic>
               </Segment>

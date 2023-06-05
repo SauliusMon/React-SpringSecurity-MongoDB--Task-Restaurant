@@ -8,6 +8,8 @@ function AdminTab(props) {
   const { isUsersLoading, users, userUsernameSearch, handleDeleteUser, handleSearchUser } = props
   const { isOrdersLoading, orders, orderDescription, orderTextSearch, handleCreateOrder, handleDeleteOrder, handleSearchOrder } = props
 
+  const { handleCreateMenu } = props
+
   const panes = [
     {
       menuItem: { key: 'users', icon: 'users', content: 'Users' },
@@ -19,6 +21,7 @@ function AdminTab(props) {
             handleInputChange={handleInputChange}
             handleDeleteUser={handleDeleteUser}
             handleSearchUser={handleSearchUser}
+            handleCreateMenu={handleCreateMenu}
           />
         </Tab.Pane>
       )

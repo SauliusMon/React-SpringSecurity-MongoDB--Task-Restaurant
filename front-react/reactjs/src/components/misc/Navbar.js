@@ -38,8 +38,8 @@ function Navbar() {
       <Container>
         <Menu.Item header>Saul Cattering Establishment</Menu.Item>
         <Menu.Item as={Link} exact='true' to="/">Home</Menu.Item>
-        <Menu.Item as={Link} to="/adminpage" style={adminPageStyle()}>AdminPage</Menu.Item>
-        <Menu.Item as={Link} to="/userpage" style={userPageStyle()}>UserPage</Menu.Item>
+        <Menu.Item as={Link} to="/adminpage" style={adminPageStyle()}>Admin Page</Menu.Item>
+        <Menu.Item as={Link} to="/userpage" style={userPageStyle()}>User Page</Menu.Item>
         <Menu.Menu position='right'>
           <Menu.Item as={Link} to="/login" style={enterMenuStyle()}>Login</Menu.Item>
           <Menu.Item as={Link} to="/signup" style={enterMenuStyle()}>Sign Up</Menu.Item>

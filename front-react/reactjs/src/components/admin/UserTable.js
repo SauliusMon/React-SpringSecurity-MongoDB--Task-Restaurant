@@ -1,12 +1,13 @@
 import React from 'react'
 import { Form, Button, Input, Table } from 'semantic-ui-react'
 
-function UserTable({ users, userUsernameSearch, handleInputChange, handleDeleteUser, handleSearchUser }) {
+function UserTable({ users, userUsernameSearch, handleInputChange, handleDeleteUser, handleSearchUser, handleCreateMenu }) {
   let userList
   if (users.length === 0) {
     userList = (
       <Table.Row key='no-user'>
         <Table.Cell collapsing textAlign='center' colSpan='6'>No user</Table.Cell>
+        <Button onClick={handleCreateMenu}>Asd</Button>
       </Table.Row>
     )
   } else {

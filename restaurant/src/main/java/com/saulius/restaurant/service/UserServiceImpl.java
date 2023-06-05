@@ -1,30 +1,37 @@
 package com.saulius.restaurant.service;
 
+import com.saulius.restaurant.mapper.UserMapper;
 import com.saulius.restaurant.model.User;
 import com.saulius.restaurant.repo.UserRepository;
+import com.saulius.restaurant.rest.dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
 public class UserServiceImpl implements UserService{
 
-    //public static User user = new User("Username", "useris123", "Name", "Email", "Role");
-
     private final UserRepository userRepository;
 
     @Override
-    public Optional<User> getUserByUsername (String username) {
-        return userRepository.findAll().stream().filter(user -> user.getUsername().equals(username)).findAny();
+    public User getUserByUsername (String username) {
+        return userRepository.findAll().stream().filter(user -> user.getUsername().equals(username)).findAny().orElseThrow();
     }
 
     @Override
-    public List<User> getUsers() {
-        return null;
+    public List<UserDto> getUsers() {
+        return userRepository.findAll().stream().map(UserMapper::userToUserDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserDto> getUsersByUsernameFilter (String username) {
+        return userRepository.findAll().stream().filter(user -> user.getUsername().contains(username)).map(UserMapper::userToUserDto).collect(Collectors.toList());
     }
 
     @Override
@@ -34,7 +41,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public boolean hasUserWithEmail(String email) {
-        return false;
+        return userRepository.findAll().stream().anyMatch(user -> user.getEmail().equals(email));
     }
 
     @Override
@@ -49,6 +56,6 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void deleteUser(User user) {
-
+        userRepository.delete(user);
     }
 }

@@ -39,7 +39,7 @@ class AdminPage extends Component {
     const user = Auth.getUser()
 
     this.setState({ isUsersLoading: true })
-    orderApi.getUsers(user)
+    orderApi.getAllUsers(user)
       .then(response => {
         this.setState({ users: response.data })
       })
@@ -49,6 +49,26 @@ class AdminPage extends Component {
       .finally(() => {
         this.setState({ isUsersLoading: false })
       })
+  }
+
+  handleSearchUser = () => {
+    const Auth = this.context
+    const user = Auth.getUser()
+
+    console.log("seached users")
+
+    let username = this.state.userUsernameSearch
+    orderApi.getUsersFilteredByUsername(user, username)
+      .then(response => {
+        const data = response.data
+        const users = data instanceof Array ? data : [data]
+        this.setState({ users })
+      })
+      .catch(error => {
+        handleLogError(error)
+        this.setState({ users: [] })
+      })
+    
   }
 
   handleDeleteUser = (username) => {
@@ -64,22 +84,7 @@ class AdminPage extends Component {
       })
   }
 
-  handleSearchUser = () => {
-    const Auth = this.context
-    const user = Auth.getUser()
-
-    const username = this.state.userUsernameSearch
-    orderApi.getUsers(user, username)
-      .then(response => {
-        const data = response.data
-        const users = data instanceof Array ? data : [data]
-        this.setState({ users })
-      })
-      .catch(error => {
-        handleLogError(error)
-        this.setState({ users: [] })
-      })
-  }
+  
 
   handleGetOrders = () => {
     const Auth = this.context
@@ -148,6 +153,20 @@ class AdminPage extends Component {
       })
   }
 
+
+
+  handleCreateMenu = () => {
+    const Auth = this.context
+    const user = Auth.getUser()
+
+    orderApi.createMenu(user)
+      .then(() => {
+        
+      }).catch(error => {
+        handleLogError(error)
+      })
+  }
+
   render() {
     if (!this.state.isAdmin) {
       return <Navigate to='/' />
@@ -169,6 +188,7 @@ class AdminPage extends Component {
             handleDeleteOrder={this.handleDeleteOrder}
             handleSearchOrder={this.handleSearchOrder}
             handleInputChange={this.handleInputChange}
+            handleCreateMenu={this.handleCreateMenu}
           />
         </Container>
       )

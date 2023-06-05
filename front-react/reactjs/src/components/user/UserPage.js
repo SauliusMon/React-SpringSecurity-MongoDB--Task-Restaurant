@@ -6,6 +6,9 @@ import AuthContext from '../context/AuthContext'
 import { orderApi } from '../misc/OrderApi'
 import { handleLogError } from '../misc/Helpers'
 
+import { Button } from 'semantic-ui-react';
+
+
 class UserPage extends Component {
   static contextType = AuthContext
 
@@ -67,6 +70,18 @@ class UserPage extends Component {
       })
   }
 
+  handleCreateMenu = () => {
+    const Auth = this.context
+    const user = Auth.getUser()
+
+    orderApi.createMenu(user)
+      .then(() => {
+        
+      }).catch(error => {
+        handleLogError(error)
+      })
+  }
+
   render() {
     if (!this.state.isUser) {
       return <Navigate to='/' />
@@ -81,6 +96,7 @@ class UserPage extends Component {
             handleCreateOrder={this.handleCreateOrder}
             handleInputChange={this.handleInputChange}
           />
+          <Button onClick={this.handleCreateMenu}>Asd</Button>
         </Container>
       )
     }

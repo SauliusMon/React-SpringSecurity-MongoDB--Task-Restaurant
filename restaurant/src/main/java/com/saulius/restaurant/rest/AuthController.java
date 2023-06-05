@@ -8,7 +8,6 @@ import com.saulius.restaurant.rest.dto.SignUpRequest;
 import com.saulius.restaurant.security.TokenProvider;
 import com.saulius.restaurant.security.WebSecurityConfig;
 import com.saulius.restaurant.service.UserService;
-import com.saulius.restaurant.service.UserServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -34,7 +33,6 @@ public class AuthController {
 
     @PostMapping("/authenticate")
     public AuthResponse login(@Valid @RequestBody LoginRequest loginRequest) {
-        System.out.println(loginRequest);
         String token = authenticateAndGetToken(loginRequest.getUsername(), loginRequest.getPassword());
         return new AuthResponse(token);
     }
@@ -48,11 +46,10 @@ public class AuthController {
         if (userService.hasUserWithEmail(signUpRequest.getEmail())) {
             throw new DuplicatedUserInfoException("Email " + signUpRequest.getEmail() + " already been used");
         }
-        System.out.println(signUpRequest);
-
         userService.saveUser(mapSignUpRequestToUser(signUpRequest));
 
         String token = authenticateAndGetToken(signUpRequest.getUsername(), signUpRequest.getPassword());
+
         return new AuthResponse(token);
     }
 

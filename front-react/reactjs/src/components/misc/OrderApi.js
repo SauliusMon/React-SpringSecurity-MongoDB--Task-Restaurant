@@ -5,8 +5,9 @@ import { parseJwt } from './Helpers'
 export const orderApi = {
   authenticate,
   signup,
-  numberOfUsers,
-  numberOfOrders,
+  createMenu,
+  getAllUsers,
+  getUsersFilteredByUsername,
   getUsers,
   deleteUser,
   getOrders,
@@ -16,7 +17,6 @@ export const orderApi = {
 }
 
 function authenticate(username, password) {
-  console.log("authenticate called")
   return instance.post('/auth/authenticate', { username, password }, {
     headers: { 'Content-type': 'application/json' }
   })
@@ -28,12 +28,34 @@ function signup(user) {
   })
 }
 
-function numberOfUsers() {
-  return instance.get('/public/numberOfUsers')
+function createMenu(user) {
+  console.log("create menu called")
+
+  return instance.get('/api/v1/menu/create-menu', {
+    headers: { 'Authorization': bearerAuth(user) }
+  })
 }
 
-function numberOfOrders() {
-  return instance.get('/public/numberOfOrders')
+function getAllUsers(user) {
+  return instance.get('/api/v1/users/get-users', {
+    headers: { 'Authorization': bearerAuth(user) }
+  })
+}
+
+function getUsersFilteredByUsername(user, username) {
+  if (username === '' || username.trim().length === 0) {
+    return getAllUsers(user);
+  }
+  return instance.get(`/api/v1/users/get-users-by-username/${username}`, {
+    headers: { 'Authorization': bearerAuth(user) }
+  })
+}
+
+function deleteUser(user, username) {
+  //Cant delete yourself
+  return instance.delete(`/api/v1/users/delete-user/${username}`, {
+    headers: { 'Authorization': bearerAuth(user) }
+  })
 }
 
 function getUsers(user, username) {
@@ -43,11 +65,6 @@ function getUsers(user, username) {
   })
 }
 
-function deleteUser(user, username) {
-  return instance.delete(`/api/users/${username}`, {
-    headers: { 'Authorization': bearerAuth(user) }
-  })
-}
 
 function getOrders(user, text) {
   const url = text ? `/api/orders?text=${text}` : '/api/orders'
