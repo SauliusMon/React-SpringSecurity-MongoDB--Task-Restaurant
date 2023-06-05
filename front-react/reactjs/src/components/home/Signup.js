@@ -60,10 +60,14 @@ class Signup extends Component {
       })
       .catch(error => {
         handleLogError(error)
+
         if (error.response && error.response.data) {
           const errorData = error.response.data
           let errorMessage = 'Invalid fields'
           if (errorData.status === 409) {
+            console.log(errorData)
+            console.log(error)
+            console.log(errorData.errorMessage)
             errorMessage = errorData.message
           } else if (errorData.status === 400) {
             errorMessage = errorData.errors[0].defaultMessage

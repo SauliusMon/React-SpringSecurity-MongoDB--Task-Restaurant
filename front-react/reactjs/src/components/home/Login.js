@@ -51,6 +51,7 @@ class Login extends Component {
         })
       })
       .catch(error => {
+        console.log("Error caught")
         handleLogError(error)
         this.setState({ isError: true })
       })

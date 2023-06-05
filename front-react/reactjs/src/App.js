@@ -9,6 +9,8 @@ import Signup from './components/home/Signup'
 import AdminPage from './components/admin/AdminPage'
 import UserPage from './components/user/UserPage'
 
+import 'semantic-ui-css/semantic.min.css'
+
 function App() {
   return (
      <AuthProvider>

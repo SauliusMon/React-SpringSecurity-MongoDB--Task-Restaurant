@@ -33,11 +33,11 @@ function OrderTable({ orders, orderDescription, handleInputChange, handleCreateO
             </Header>
           </Grid.Column>
           <Grid.Column>
-            <OrderForm
+            {/* <OrderForm
               orderDescription={orderDescription}
               handleInputChange={handleInputChange}
               handleCreateOrder={handleCreateOrder}
-            />
+            /> */}
           </Grid.Column>
         </Grid.Row>
       </Grid>
