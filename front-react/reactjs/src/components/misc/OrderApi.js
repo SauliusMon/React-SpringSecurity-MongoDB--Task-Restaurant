@@ -13,6 +13,9 @@ export const orderApi = {
   getMenusFilteredByName,
   deleteMenu,
   createMenu,
+  getMenuByID,
+  addMealToMenu,
+  removeMealFromMenu,
 
   getAllMeals,
   getMealCategories,
@@ -68,6 +71,12 @@ function getAllMenus(user) {
   })
 }
 
+function getMenuByID(user, menuID) {
+  return instance.get(`/api/v1/menu/get-menu/${menuID}`, {
+    headers: { 'Authorization': bearerAuth(user) }
+  })
+}
+
 function getMenusFilteredByName(user, menuTitle) {
   if (menuTitle === '' || menuTitle.trim().length === 0) {
     return getAllMenus(user);
@@ -87,6 +96,30 @@ function deleteMenu(user, menuID) {
   return instance.delete(`/api/v1/menu/delete-menu/${menuID}`, {
     headers: { 'Authorization': bearerAuth(user) }
   })
+}
+
+function addMealToMenu(user, menuID, mealID) {
+  return instance.post('/api/v1/menu/add-meal-to-menu', null, {
+    params: {
+      menuID: menuID,
+      mealID: mealID,
+    },
+    headers: {
+      Authorization: bearerAuth(user),
+    },
+  });
+}
+
+function removeMealFromMenu(user, menuID, mealID) {
+  return instance.delete('/api/v1/menu/remove-meal-from-menu', {
+    params: {
+      menuID: menuID,
+      mealID: mealID,
+    },
+    headers: {
+      Authorization: bearerAuth(user),
+    },
+  });
 }
 
 

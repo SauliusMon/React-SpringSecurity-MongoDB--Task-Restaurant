@@ -24,6 +24,7 @@ function MenuTable ({ menus, newMenuTitle, menuTitleSearch, handleMenuSearch, ha
           </Table.Cell>
           <Table.Cell>{menu.id}</Table.Cell>
           <Table.Cell>{menu.menuTitle}</Table.Cell>
+          <Table.Cell>{menu.mealsInMenu.length}</Table.Cell>
         </Table.Row>
       )
     })
@@ -63,7 +64,7 @@ function MenuTable ({ menus, newMenuTitle, menuTitleSearch, handleMenuSearch, ha
             <Table.HeaderCell width={1} />
             <Table.HeaderCell width={3}>ID</Table.HeaderCell>
             <Table.HeaderCell width={3}>Menu Title</Table.HeaderCell>
-            <Table.HeaderCell width={4}>More details</Table.HeaderCell>
+            <Table.HeaderCell width={4}>Amount of Meals</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>

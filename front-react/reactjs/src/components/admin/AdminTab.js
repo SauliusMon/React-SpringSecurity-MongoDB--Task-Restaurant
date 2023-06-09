@@ -4,6 +4,7 @@ import UserTable from './UserTable'
 import OrderTable from './OrderTable'
 import MenuTable from './MenuTable'
 import MealTable from './MealTable'
+import MenuMealsAdmin from './MenuMealsAdmin'
 
 function AdminTab(props) {
   const { handleInputChange } = props
@@ -11,6 +12,8 @@ function AdminTab(props) {
   const { isOrdersLoading, orders, orderDescription, orderTextSearch, handleCreateOrder, handleDeleteOrder, handleSearchOrder } = props
   const { isMenusLoading, menus, newMenuTitle, menuTitleSearch, handleMenuSearch, handleCreateMenu,  handleDeleteMenu } = props
   const { isMealsLoading, handleMealCategoryChange, meals, mealsCategories, newMealName, newMealDescription, newMealQuantity, newMealPrice, mealNameSearch, handleMealSearch, handleCreateMeal, handleDeleteMeal } = props
+  const { currentMenu, handleSelectedMenuChange, handleAddMealToCurrentMenu, handleMealChange, handleDeleteMealFromMenu } = props
+  
   const panes = [
     {
       menuItem: { key: 'users', icon: 'users', content: 'Users' },
@@ -55,7 +58,6 @@ function AdminTab(props) {
             handleInputChange={handleInputChange}   
             handleCreateMenu={handleCreateMenu} 
             handleDeleteMenu={handleDeleteMenu}  
-            
           />
         </Tab.Pane>
       )
@@ -79,6 +81,22 @@ function AdminTab(props) {
             handleInputChange={handleInputChange}   
             handleCreateMeal={handleCreateMeal} 
             handleDeleteMeal={handleDeleteMeal}  
+          />
+        </Tab.Pane>
+      )
+    },
+    {
+      menuItem: { key: 'menu-meals', icon: 'book', content: 'Modify menu' },
+      render: () => (
+        <Tab.Pane loading={isMenusLoading}>
+          <MenuMealsAdmin
+            menus={menus} 
+            meals={meals}
+            currentMenu={currentMenu}
+            handleSelectedMenuChange={handleSelectedMenuChange}
+            handleAddMealToCurrentMenu={handleAddMealToCurrentMenu}
+            handleDeleteMealFromMenu={handleDeleteMealFromMenu}  
+            handleMealChange={handleMealChange} 
           />
         </Tab.Pane>
       )

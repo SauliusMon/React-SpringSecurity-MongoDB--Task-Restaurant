@@ -12,9 +12,9 @@ public interface MenuService {
 
     List<Menu> getAllMenus();
 
-    boolean addMealToMenuByID(String ID);
+    boolean addMealToMenu(String ID, String mealID);
 
-    boolean removeMealFromMenuByID(String ID);
+    boolean removeMealFromMenu(String menuID, String mealID);
 
     boolean createMenu(Menu menu);
 

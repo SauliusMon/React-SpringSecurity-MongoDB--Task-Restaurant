@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Navigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 import { Container } from 'semantic-ui-react'
 import AuthContext from '../context/AuthContext'
 import { orderApi } from '../misc/OrderApi'
@@ -24,6 +24,8 @@ class AdminPage extends Component {
     mealNameSearch: '',
 
     newMenuTitle: '',
+    currentMenu: {},
+    addedMealID: '',
 
     newMealCategory: '',
     newMealName: '',
@@ -57,6 +59,10 @@ class AdminPage extends Component {
 
   handleMealCategoryChange = (e, { value }) => {
     this.newMealCategory = value
+  };
+
+  handleMealChange = (e, { value }) => {
+    this.addedMealID = value
   };
 
   handleGetUsers = () => {
@@ -176,6 +182,51 @@ class AdminPage extends Component {
       })
   }
 
+  handleSelectedMenuChange = (e, { value }) => {
+    this.updateSelectedMenu(value);
+  }
+
+  updateSelectedMenu = (value) => {
+    const Auth = this.context
+    const user = Auth.getUser()
+
+    orderApi.getMenuByID(user, value)
+      .then(response => {
+        this.setState({ currentMenu: response.data })
+      })
+      .catch(error => {
+        handleLogError(error)
+      })
+  }
+
+  handleAddMealToCurrentMenu = () => {
+    const Auth = this.context
+    const user = Auth.getUser()
+
+    orderApi.addMealToMenu(user, this.state.currentMenu.id, this.addedMealID)
+      .then(() => {
+        this.handleGetMenus()
+        this.updateSelectedMenu(this.state.currentMenu.id)
+      })
+      .catch(error => {
+        handleLogError(error)
+      })
+  }
+
+  handleDeleteMealFromMenu= (mealID) => {
+    const Auth = this.context
+    const user = Auth.getUser()
+
+    orderApi.removeMealFromMenu(user, this.state.currentMenu.id, mealID)
+      .then(() => {
+        this.handleGetMenus()
+        this.updateSelectedMenu(this.state.currentMenu.id)
+      })
+      .catch(error => {
+        handleLogError(error)
+      })
+  }
+
 
   handleGetMeals = () => {
     const Auth = this.context
@@ -212,7 +263,6 @@ class AdminPage extends Component {
       .finally(() => {
         this.setState({ isMenusLoading: false })
       })
-
     }
 
   handleMealSearch = () => {
@@ -342,7 +392,8 @@ class AdminPage extends Component {
       const { isUsersLoading, users, userUsernameSearch, 
         isOrdersLoading, orders, orderDescription, orderTextSearch, 
         isMenusLoading, menus, newMenuTitle, menuTitleSearch,
-        isMealsLoading, meals, mealsCategories, newMealCategory, newMealName, newMealDescription, newMealQuantity, newMealPrice, mealNameSearch
+        isMealsLoading, meals, mealsCategories, newMealCategory, newMealName, newMealDescription, newMealQuantity, newMealPrice, mealNameSearch,
+        currentMenu
 
       } = this.state
       return (
@@ -386,6 +437,12 @@ class AdminPage extends Component {
             handleMealSearch={this.handleMealSearch}
             handleCreateMeal={this.handleCreateMeal}
             handleDeleteMeal={this.handleDeleteMeal}
+
+            currentMenu={currentMenu}
+            handleSelectedMenuChange={this.handleSelectedMenuChange}
+            handleAddMealToCurrentMenu={this.handleAddMealToCurrentMenu}
+            handleMealChange={this.handleMealChange}
+            handleDeleteMealFromMenu={this.handleDeleteMealFromMenu}
           />
         </Container>
       )

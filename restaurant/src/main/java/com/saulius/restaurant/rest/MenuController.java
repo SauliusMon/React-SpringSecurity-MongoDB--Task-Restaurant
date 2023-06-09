@@ -52,5 +52,15 @@ public class MenuController {
         menuService.deleteMenu(menuID);
     }
 
+    @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    @PostMapping("/add-meal-to-menu")
+    public void addMealToMenu (@RequestParam String menuID, @RequestParam String mealID) {
+        menuService.addMealToMenu(menuID, mealID);
+    }
 
+    @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    @DeleteMapping("/remove-meal-from-menu")
+    public void deleteMealFromMenu (@RequestParam String menuID, @RequestParam String mealID) {
+        menuService.removeMealFromMenu(menuID, mealID);
+    }
 }

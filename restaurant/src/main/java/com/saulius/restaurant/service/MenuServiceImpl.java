@@ -1,5 +1,6 @@
 package com.saulius.restaurant.service;
 
+import com.saulius.restaurant.model.Meal;
 import com.saulius.restaurant.model.Menu;
 import com.saulius.restaurant.repo.MealRepository;
 import com.saulius.restaurant.repo.MenuRepository;
@@ -7,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -14,10 +16,11 @@ import java.util.stream.Collectors;
 public class MenuServiceImpl implements MenuService{
 
     private final MenuRepository menuRepository;
+    private final MealRepository mealRepository;
 
     @Override
     public Menu getMenuByID(String ID) {
-        return null;
+        return menuRepository.findById(ID).orElse(null);
     }
 
     @Override
@@ -31,12 +34,30 @@ public class MenuServiceImpl implements MenuService{
     }
 
     @Override
-    public boolean addMealToMenuByID(String ID) {
+    public boolean addMealToMenu(String menuID, String mealID) {
+        Optional<Meal> mealToAdd = mealRepository.findById(mealID);
+        if (mealToAdd.isPresent()) {
+            Optional<Menu> menuToGet = menuRepository.findById(menuID);
+            if (menuToGet.isPresent()) {
+                menuToGet.get().addMealToMenu(mealToAdd.get());
+                menuRepository.save(menuToGet.get());
+                return true;
+            }
+        }
         return false;
     }
 
     @Override
-    public boolean removeMealFromMenuByID(String ID) {
+    public boolean removeMealFromMenu(String menuID, String mealID) {
+        Optional<Meal> mealToRemove = mealRepository.findById(mealID);
+        if (mealToRemove.isPresent()) {
+            Optional<Menu> menuToGet = menuRepository.findById(menuID);
+            if (menuToGet.isPresent()) {
+                menuToGet.get().removeMealFromMenu(mealToRemove.get());
+                menuRepository.save(menuToGet.get());
+                return true;
+            }
+        }
         return false;
     }
 

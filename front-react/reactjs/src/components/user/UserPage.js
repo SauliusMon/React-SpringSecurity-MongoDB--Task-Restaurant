@@ -5,8 +5,7 @@ import OrderTable from './OrderTable'
 import AuthContext from '../context/AuthContext'
 import { orderApi } from '../misc/OrderApi'
 import { handleLogError } from '../misc/Helpers'
-
-import { Button } from 'semantic-ui-react';
+import MenuMealsUser from './MenuMealsUser'
 
 
 class UserPage extends Component {
@@ -16,7 +15,10 @@ class UserPage extends Component {
     userMe: null,
     isUser: true,
     isLoading: false,
-    orderDescription: ''
+    orderDescription: '',
+
+    menus: [],
+    currentMenu: {}
   }
 
   componentDidMount() {
@@ -26,7 +28,43 @@ class UserPage extends Component {
     this.setState({ isUser })
 
     this.handleGetUserMe()
+    this.handleGetMenus()
   }
+
+  handleSelectedMenuChange = (e, { value }) => {
+    this.updateSelectedMenu(value);
+  }
+
+  updateSelectedMenu = (value) => {
+    const Auth = this.context
+    const user = Auth.getUser()
+
+    orderApi.getMenuByID(user, value)
+      .then(response => {
+        this.setState({ currentMenu: response.data })
+      })
+      .catch(error => {
+        handleLogError(error)
+      })
+  }
+
+  handleGetMenus = () => {
+    const Auth = this.context
+    const user = Auth.getUser()
+
+    this.setState({ isMenusLoading: true })
+    orderApi.getAllMenus(user)
+      .then(response => {
+        this.setState({ menus: response.data })
+      })
+      .catch(error => {
+        handleLogError(error)
+      })
+      .finally(() => {
+        this.setState({ isMenusLoading: false })
+      })
+  }
+
 
   handleInputChange = (e, {name, value}) => {
     this.setState({ [name]: value })
@@ -70,23 +108,13 @@ class UserPage extends Component {
       })
   }
 
-  handleCreateMenu = () => {
-    const Auth = this.context
-    const user = Auth.getUser()
-
-    orderApi.createMenu(user)
-      .then(() => {
-        
-      }).catch(error => {
-        handleLogError(error)
-      })
-  }
-
   render() {
     if (!this.state.isUser) {
       return <Navigate to='/' />
     } else {
-      const { userMe, isLoading, orderDescription } = this.state
+      const { userMe, isLoading, orderDescription,
+              menus, currentMenu
+      } = this.state
       return (
         <Container>
           <OrderTable
@@ -96,7 +124,11 @@ class UserPage extends Component {
             handleCreateOrder={this.handleCreateOrder}
             handleInputChange={this.handleInputChange}
           />
-          <Button onClick={this.handleCreateMenu}>Asd</Button>
+          <MenuMealsUser
+            menus={menus}
+            currentMenu={currentMenu}
+            handleSelectedMenuChange={this.handleSelectedMenuChange}
+          />
         </Container>
       )
     }
