@@ -2,13 +2,15 @@ package com.saulius.restaurant.service;
 
 import com.saulius.restaurant.model.Menu;
 
-import java.util.Set;
+import java.util.List;
 
 public interface MenuService {
 
-    Menu getMenuByID(String ID);
+    Menu getMenuByID(String menuID);
 
-    Set<Menu> getAllMenus();
+    List<Menu> getMenuByNameFilter(String nameFilter);
+
+    List<Menu> getAllMenus();
 
     boolean addMealToMenuByID(String ID);
 
@@ -16,7 +18,7 @@ public interface MenuService {
 
     boolean createMenu(Menu menu);
 
-
+    void deleteMenu(String menuID);
 
 }
 

@@ -14,15 +14,4 @@ public class RestaurantApplication {
 		SpringApplication.run(RestaurantApplication.class, args);
 	}
 
-//	@Bean
-//	CommandLineRunner runner(UserRepository repository) {
-//		return args -> {
-//			User user = new User();
-//			user.setId(1L);
-//			user.setName("Protas");
-//			user.setPassword("asdasd");
-//
-//			repository.insert(user);
-//		};
-//	}
 }

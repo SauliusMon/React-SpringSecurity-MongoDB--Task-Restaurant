@@ -1,55 +1,29 @@
-package com.saulius.restaurant.model;
+package com.saulius.restaurant.rest.dto;
 
-import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
+import com.saulius.restaurant.model.MealCategory;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.Objects;
 
-@Data
-@Document("Meals")
-public class Meal {
-
-    @Id
-    private String id;
+public class MealDto {
 
     private String mealCategory;
-
+    @Schema(example = "meal")
+    @NotBlank
     private String name;
+    @Schema(example = "meal")
+    @NotBlank
     private String description;
     private int quantity;
     private double price;
 
-    @DBRef
-    private Menu menu;
-
-    public Meal() {
-    }
-
-    public Meal(String mealCategory, String name, String description, int quantity, double price) {
+    public MealDto(String mealCategory, String name, String description, int quantity, double price) {
         this.mealCategory = mealCategory;
         this.name = name;
         this.description = description;
         this.quantity = quantity;
         this.price = price;
-    }
-
-    public Meal(String mealCategory, String name, String description, int quantity, double price, Menu menu) {
-        this.mealCategory = mealCategory;
-        this.name = name;
-        this.description = description;
-        this.quantity = quantity;
-        this.price = price;
-        this.menu = menu;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getMealCategory() {
@@ -92,33 +66,25 @@ public class Meal {
         this.price = price;
     }
 
-    public Menu getMenu() {
-        return menu;
-    }
-
-    public void setMenu(Menu menu) {
-        this.menu = menu;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Meal meal = (Meal) o;
-        return quantity == meal.quantity && Double.compare(meal.price, price) == 0 && Objects.equals(id, meal.id) && Objects.equals(name, meal.name) && Objects.equals(description, meal.description);
+        MealDto mealDto = (MealDto) o;
+        return quantity == mealDto.quantity && Double.compare(mealDto.price, price) == 0 && mealCategory == mealDto.mealCategory && Objects.equals(name, mealDto.name) && Objects.equals(description, mealDto.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, quantity, price);
+        return Objects.hash(mealCategory, name, description, quantity, price);
     }
 
     @Override
     public String toString() {
-        return "Meal{" +
-                "id='" + id + '\'' +
+        return "MealDto{" +
+                "mealCategory=" + mealCategory +
                 ", name='" + name + '\'' +
-                ", descprition='" + description + '\'' +
+                ", description='" + description + '\'' +
                 ", quantity=" + quantity +
                 ", price=" + price +
                 '}';

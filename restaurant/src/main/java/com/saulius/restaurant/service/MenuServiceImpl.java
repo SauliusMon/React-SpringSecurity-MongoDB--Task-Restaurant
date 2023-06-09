@@ -6,7 +6,8 @@ import com.saulius.restaurant.repo.MenuRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -20,8 +21,13 @@ public class MenuServiceImpl implements MenuService{
     }
 
     @Override
-    public Set<Menu> getAllMenus() {
-        return null;
+    public List<Menu> getMenuByNameFilter(String nameFilter) {
+        return menuRepository.findAll().stream().filter(menu -> menu.getMenuTitle().toLowerCase().contains(nameFilter.toLowerCase())).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Menu> getAllMenus() {
+        return menuRepository.findAll();
     }
 
     @Override
@@ -36,10 +42,13 @@ public class MenuServiceImpl implements MenuService{
 
     @Override
     public boolean createMenu(Menu menu) {
-        System.out.println("Service is called");
         menuRepository.save(menu);
-        System.out.println("Saving succ");
         return false;
+    }
+
+    @Override
+    public void deleteMenu(String menuID) {
+        menuRepository.deleteById(menuID);
     }
 
 

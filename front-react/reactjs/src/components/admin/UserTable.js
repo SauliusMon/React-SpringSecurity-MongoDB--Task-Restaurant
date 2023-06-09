@@ -7,7 +7,6 @@ function UserTable({ users, userUsernameSearch, handleInputChange, handleDeleteU
     userList = (
       <Table.Row key='no-user'>
         <Table.Cell collapsing textAlign='center' colSpan='6'>No user</Table.Cell>
-        <Button onClick={handleCreateMenu}>Asd</Button>
       </Table.Row>
     )
   } else {

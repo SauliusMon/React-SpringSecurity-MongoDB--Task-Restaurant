@@ -2,14 +2,15 @@ import React from 'react'
 import { Tab } from 'semantic-ui-react'
 import UserTable from './UserTable'
 import OrderTable from './OrderTable'
+import MenuTable from './MenuTable'
+import MealTable from './MealTable'
 
 function AdminTab(props) {
   const { handleInputChange } = props
   const { isUsersLoading, users, userUsernameSearch, handleDeleteUser, handleSearchUser } = props
   const { isOrdersLoading, orders, orderDescription, orderTextSearch, handleCreateOrder, handleDeleteOrder, handleSearchOrder } = props
-
-  const { handleCreateMenu } = props
-
+  const { isMenusLoading, menus, newMenuTitle, menuTitleSearch, handleMenuSearch, handleCreateMenu,  handleDeleteMenu } = props
+  const { isMealsLoading, handleMealCategoryChange, meals, mealsCategories, newMealName, newMealDescription, newMealQuantity, newMealPrice, mealNameSearch, handleMealSearch, handleCreateMeal, handleDeleteMeal } = props
   const panes = [
     {
       menuItem: { key: 'users', icon: 'users', content: 'Users' },
@@ -38,6 +39,46 @@ function AdminTab(props) {
             handleCreateOrder={handleCreateOrder}
             handleDeleteOrder={handleDeleteOrder}
             handleSearchOrder={handleSearchOrder}
+          />
+        </Tab.Pane>
+      )
+    },
+    {
+      menuItem: { key: 'menus', icon: 'laptop', content: 'Menus' },
+      render: () => (
+        <Tab.Pane loading={isMenusLoading}>
+          <MenuTable
+            menus={menus}    
+            newMenuTitle={newMenuTitle}
+            menuTitleSearch={menuTitleSearch}
+            handleMenuSearch={handleMenuSearch}  
+            handleInputChange={handleInputChange}   
+            handleCreateMenu={handleCreateMenu} 
+            handleDeleteMenu={handleDeleteMenu}  
+            
+          />
+        </Tab.Pane>
+      )
+    },
+    {
+      menuItem: { key: 'meals', icon: 'utensils', content: 'Meals' },
+      render: () => (
+        <Tab.Pane loading={isMealsLoading}>
+          <MealTable
+            handleMealCategoryChange={handleMealCategoryChange}
+            meals={meals}    
+            mealsCategories={mealsCategories}
+
+            newMealName={newMealName}
+            newMealDescription={newMealDescription}
+            newMealQuantity={newMealQuantity}
+            newMealPrice={newMealPrice}
+
+            mealNameSearch={mealNameSearch}
+            handleMealSearch={handleMealSearch}  
+            handleInputChange={handleInputChange}   
+            handleCreateMeal={handleCreateMeal} 
+            handleDeleteMeal={handleDeleteMeal}  
           />
         </Tab.Pane>
       )

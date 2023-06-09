@@ -5,11 +5,21 @@ import { parseJwt } from './Helpers'
 export const orderApi = {
   authenticate,
   signup,
-  createMenu,
   getAllUsers,
   getUsersFilteredByUsername,
-  getUsers,
   deleteUser,
+
+  getAllMenus,
+  getMenusFilteredByName,
+  deleteMenu,
+  createMenu,
+
+  getAllMeals,
+  getMealCategories,
+  getMealsFilteredByName,
+  deleteMeal,
+  createMeal,
+
   getOrders,
   deleteOrder,
   createOrder,
@@ -28,13 +38,6 @@ function signup(user) {
   })
 }
 
-function createMenu(user) {
-  console.log("create menu called")
-
-  return instance.get('/api/v1/menu/create-menu', {
-    headers: { 'Authorization': bearerAuth(user) }
-  })
-}
 
 function getAllUsers(user) {
   return instance.get('/api/v1/users/get-users', {
@@ -58,9 +61,64 @@ function deleteUser(user, username) {
   })
 }
 
-function getUsers(user, username) {
-  const url = username ? `/api/users/${username}` : '/api/users'
-  return instance.get(url, {
+
+function getAllMenus(user) {
+  return instance.get('/api/v1/menu/get-menus', {
+    headers: { 'Authorization': bearerAuth(user) }
+  })
+}
+
+function getMenusFilteredByName(user, menuTitle) {
+  if (menuTitle === '' || menuTitle.trim().length === 0) {
+    return getAllMenus(user);
+  }
+  return instance.get(`/api/v1/menu/get-menus-filtered/${menuTitle}`, {
+    headers: { 'Authorization': bearerAuth(user) }
+  })
+}
+
+function createMenu(user, menuToCreate) {
+  return instance.post('/api/v1/menu/create-menu', menuToCreate, {
+    headers: { 'Authorization': bearerAuth(user) }
+  })
+}
+
+function deleteMenu(user, menuID) {
+  return instance.delete(`/api/v1/menu/delete-menu/${menuID}`, {
+    headers: { 'Authorization': bearerAuth(user) }
+  })
+}
+
+
+function getAllMeals(user) {
+  return instance.get('/api/v1/meal/get-meals', {
+    headers: { 'Authorization': bearerAuth(user) }
+  })
+}
+
+function getMealCategories(user) {
+  return instance.get('/api/v1/meal/get-meal-categories', {
+    headers: { 'Authorization': bearerAuth(user) }
+  })
+}
+
+function getMealsFilteredByName(user, mealName) {
+  if (mealName === '' || mealName.trim().length === 0) {
+    return getAllMeals(user);
+  }
+  return instance.get(`/api/v1/meal/get-meals-filtered/${mealName}`, {
+    headers: { 'Authorization': bearerAuth(user) }
+  })
+}
+
+function createMeal(user, mealToCreate) {
+  return instance.post('/api/v1/meal/create-meal', mealToCreate, {
+    headers: { 'Authorization': bearerAuth(user) }
+  })
+}
+
+function deleteMeal(user, mealID) {
+  return instance.delete(`/api/v1/meal/delete-meal/${mealID}`, {
     headers: { 'Authorization': bearerAuth(user) }
   })
 }
