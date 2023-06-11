@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 import { Container } from 'semantic-ui-react'
 import AuthContext from '../context/AuthContext'
 import { orderApi } from '../misc/OrderApi'
@@ -15,9 +15,6 @@ class AdminPage extends Component {
     menus: [],
     meals: [],
     mealsCategories: [],
-
-    orderDescription: '',
-    orderTextSearch: '',
 
     userUsernameSearch: '',
     menuTitleSearch: '',
@@ -335,65 +332,47 @@ class AdminPage extends Component {
       })
   }
 
-  handleDeleteOrder = (isbn) => {
+  handleDeleteOrder = (orderID) => {
     const Auth = this.context
     const user = Auth.getUser()
 
-    orderApi.deleteOrder(user, isbn)
-      .then(() => {
+    this.setState({ isOrdersLoading: true })
+    orderApi.deleteOrder(user, orderID)
+      .catch(error => {
+        handleLogError(error)
+      })
+      .finally(() => {
         this.handleGetOrders()
-      })
-      .catch(error => {
-        handleLogError(error)
+        this.handleGetMeals()
+        this.handleGetMenus()
+        this.setState({ isOrdersLoading: false })
       })
   }
 
-  handleCreateOrder = () => {
+  handleAcceptOrder = (orderID) => {
     const Auth = this.context
     const user = Auth.getUser()
 
-    let { orderDescription } = this.state
-    orderDescription = orderDescription.trim()
-    if (!orderDescription) {
-      return
-    }
-
-    const order = { description: orderDescription }
-    orderApi.createOrder(user, order)
-      .then(() => {
+    this.setState({ isOrdersLoading: true })
+    orderApi.acceptOrder(user, orderID)
+      .catch(error => {
+        handleLogError(error)
+      })
+      .finally(() => {
         this.handleGetOrders()
-        this.setState({ orderDescription: '' })
-      })
-      .catch(error => {
-        handleLogError(error)
+        this.setState({ isOrdersLoading: false })
       })
   }
 
-  handleSearchOrder = () => {
-    const Auth = this.context
-    const user = Auth.getUser()
-
-    const text = this.state.orderTextSearch
-    orderApi.getOrders(user, text)
-      .then(response => {
-        const orders = response.data
-        this.setState({ orders })
-      })
-      .catch(error => {
-        handleLogError(error)
-        this.setState({ orders: [] })
-      })
-  }
 
   render() {
     if (!this.state.isAdmin) {
       return <Navigate to='/' />
     } else {
-      const { isUsersLoading, users, userUsernameSearch, 
-        isOrdersLoading, orders, orderDescription, orderTextSearch, 
+      const { isUsersLoading, users, userUsernameSearch, isOrdersLoading,
         isMenusLoading, menus, newMenuTitle, menuTitleSearch,
         isMealsLoading, meals, mealsCategories, newMealCategory, newMealName, newMealDescription, newMealQuantity, newMealPrice, mealNameSearch,
-        currentMenu
+        currentMenu, orders
 
       } = this.state
       return (
@@ -407,11 +386,8 @@ class AdminPage extends Component {
             
             isOrdersLoading={isOrdersLoading}
             orders={orders}
-            orderDescription={orderDescription}
-            orderTextSearch={orderTextSearch}
-            handleCreateOrder={this.handleCreateOrder}
             handleDeleteOrder={this.handleDeleteOrder}
-            handleSearchOrder={this.handleSearchOrder}
+            handleAcceptOrder={this.handleAcceptOrder}
             handleInputChange={this.handleInputChange}
 
             isMenusLoading={isMenusLoading}

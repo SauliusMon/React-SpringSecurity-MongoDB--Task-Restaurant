@@ -1,13 +1,12 @@
 import React from 'react'
-import { Grid, Form, Button, Input, Table } from 'semantic-ui-react'
-import OrderForm from '../misc/OrderForm'
+import { Grid, Button, Table } from 'semantic-ui-react'
 
-function OrderTable({ orders, orderDescription, orderTextSearch, handleInputChange, handleCreateOrder, handleDeleteOrder, handleSearchOrder }) {
+function OrderTable({ orders, handleDeleteOrder, handleAcceptOrder}) {
   let orderList
-  if (orders.length === 0) {
+  if (orders === undefined || orders.length === 0) {
     orderList = (
-      <Table.Row key='no-order'>
-        <Table.Cell collapsing textAlign='center' colSpan='5'>No order</Table.Cell>
+      <Table.Row key='no-orders'>
+        <Table.Cell collapsing textAlign='center' colSpan='6'>No orders</Table.Cell>
       </Table.Row>
     )
   } else {
@@ -23,10 +22,19 @@ function OrderTable({ orders, orderDescription, orderTextSearch, handleInputChan
               onClick={() => handleDeleteOrder(order.id)}
             />
           </Table.Cell>
-          <Table.Cell>{order.id}</Table.Cell>
-          <Table.Cell>{order.user.username}</Table.Cell>
-          <Table.Cell>{order.createdAt}</Table.Cell>
-          <Table.Cell>{order.description}</Table.Cell>
+          <Table.Cell collapsing>
+            <Button
+              circular
+              color='green'
+              size='small'
+              icon='check'
+              onClick={() => handleAcceptOrder(order.id)}
+            />
+          </Table.Cell>
+          <Table.Cell>{order.orderName}</Table.Cell>
+          <Table.Cell>{order.userName}</Table.Cell>
+          <Table.Cell>{order.meals.length}</Table.Cell>
+          <Table.Cell>{order.orderConfirmed ? 'Yes' : 'No'}</Table.Cell>
         </Table.Row>
       )
     })
@@ -37,7 +45,7 @@ function OrderTable({ orders, orderDescription, orderTextSearch, handleInputChan
       <Grid stackable divided>
         <Grid.Row columns='2'>
           <Grid.Column width='5'>
-            <Form onSubmit={handleSearchOrder}>
+            {/* <Form onSubmit={handleSearchOrder}>
               <Input
                 action={{ icon: 'search' }}
                 name='orderTextSearch'
@@ -45,25 +53,19 @@ function OrderTable({ orders, orderDescription, orderTextSearch, handleInputChan
                 value={orderTextSearch}
                 onChange={handleInputChange}
               />
-            </Form>
-          </Grid.Column>
-          <Grid.Column>
-            <OrderForm
-              orderDescription={orderDescription}
-              handleInputChange={handleInputChange}
-              handleCreateOrder={handleCreateOrder}
-            />
+            </Form> */}
           </Grid.Column>
         </Grid.Row>
       </Grid>
       <Table compact striped selectable>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell width={1}/>
-            <Table.HeaderCell width={5}>ID</Table.HeaderCell>
-            <Table.HeaderCell width={2}>Username</Table.HeaderCell>
-            <Table.HeaderCell width={4}>Created At</Table.HeaderCell>
-            <Table.HeaderCell width={4}>Description</Table.HeaderCell>
+            <Table.HeaderCell width={2}/>
+            <Table.HeaderCell width={2}/>
+            <Table.HeaderCell width={3}>Name</Table.HeaderCell>
+            <Table.HeaderCell width={3}>Username</Table.HeaderCell>
+            <Table.HeaderCell width={3}>Amount of Meals</Table.HeaderCell>
+            <Table.HeaderCell width={4}>Order Confirmed</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>

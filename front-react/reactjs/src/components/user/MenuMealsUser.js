@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Dropdown, Grid, Form, Button, Table } from 'semantic-ui-react'
 
-function MenuMealsUser ({ menus, currentMenu, handleSelectedMenuChange}) {
+function MenuMealsUser ({ menus, currentMenu, handleSelectedMenuChange, handleAddMealToOrder}) {
     let currentMenuList;
 
   if (currentMenu === undefined || currentMenu.menuTitle === undefined) {
@@ -27,7 +27,7 @@ function MenuMealsUser ({ menus, currentMenu, handleSelectedMenuChange}) {
               color='blue'
               size='small'
               icon='plus'
-              //onClick={() => handleDeleteMealFromMenu(meal.id)}
+              onClick={() => handleAddMealToOrder(meal)}
             />
           </Table.Cell>
           <Table.Cell>{meal.id}</Table.Cell>
@@ -72,34 +72,6 @@ function MenuMealsUser ({ menus, currentMenu, handleSelectedMenuChange}) {
             {currentMenuList}
             </Table.Body>  
         </Table>
-        {/* <Form onSubmit={handleAddMealToCurrentMenu}>
-            <Grid columns={2} stackable centered>
-                <Grid.Row> 
-                    <Grid.Column>
-                        <Form.Button primary
-                            circular
-                            color='blue'
-                            size='small'
-                        >Add a Meal
-                        </Form.Button>
-                    </Grid.Column>
-                    <Grid.Column>
-                        <Form.Field>
-                            <Dropdown
-                                style={{ marginLeft: '10px', marginRight: '10px'}}
-                                placeholder='Select a Meal'
-                                selection
-                                options={meals.map(meal => ({
-                                value: meal.id, 
-                                text: meal.name
-                                }))}
-                                onChange={handleMealChange}
-                                />
-                        </Form.Field>
-                    </Grid.Column>
-                </Grid.Row> 
-            </Grid>
-        </Form> */}
     </>
   )
 }

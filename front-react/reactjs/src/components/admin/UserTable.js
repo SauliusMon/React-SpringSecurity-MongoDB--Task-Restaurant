@@ -1,7 +1,7 @@
 import React from 'react'
 import { Form, Button, Input, Table } from 'semantic-ui-react'
 
-function UserTable({ users, userUsernameSearch, handleInputChange, handleDeleteUser, handleSearchUser, handleCreateMenu }) {
+function UserTable({ users, userUsernameSearch, handleInputChange, handleDeleteUser, handleSearchUser }) {
   let userList
   if (users.length === 0) {
     userList = (

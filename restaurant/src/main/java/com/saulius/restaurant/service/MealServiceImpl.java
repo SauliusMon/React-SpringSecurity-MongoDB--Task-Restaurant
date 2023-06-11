@@ -3,7 +3,6 @@ package com.saulius.restaurant.service;
 import com.saulius.restaurant.model.Meal;
 import com.saulius.restaurant.model.MealCategory;
 import com.saulius.restaurant.repo.MealRepository;
-import com.saulius.restaurant.rest.MealController;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;

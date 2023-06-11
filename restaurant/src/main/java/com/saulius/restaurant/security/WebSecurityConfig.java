@@ -34,11 +34,14 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                        .requestMatchers(HttpMethod.POST, "/api/orders").hasAnyAuthority(ADMIN, USER)
-                        .requestMatchers(HttpMethod.GET, "/api/users/me").hasAnyAuthority(ADMIN, USER)
 
-                        .requestMatchers("/api/v1/menu/", "/api/v1/menu/get-menus").hasAnyAuthority(ADMIN, USER)
-                        .requestMatchers("/api/v1/menu/", "/api/v1/menu/get-menu/**").hasAnyAuthority(ADMIN, USER)
+                        .requestMatchers("/api/v1/order", "/api/v1/order/accept-order").hasAnyAuthority(ADMIN)
+                        .requestMatchers("/api/v1/order", "/api/v1/order/delete-order").hasAnyAuthority(ADMIN)
+                        .requestMatchers("/api/v1/order", "/api/v1/order/get-all-orders").hasAnyAuthority(ADMIN)
+                        .requestMatchers("/api/v1/order", "/api/v1/order/get-my-orders").hasAnyAuthority(USER)
+                        .requestMatchers("/api/v1/order", "/api/v1/order/create-order").hasAnyAuthority(USER)
+                        .requestMatchers("/api/v1/menu", "/api/v1/menu/get-menus").hasAnyAuthority(ADMIN, USER)
+                        .requestMatchers("/api/v1/menu", "/api/v1/menu/get-menu/**").hasAnyAuthority(ADMIN, USER)
                         .requestMatchers("/api/v1/meal", "/api/v1/meal/**").hasAuthority(ADMIN)
                         .requestMatchers("/api/v1/menu", "/api/v1/menu/**").hasAuthority(ADMIN)
                         .requestMatchers("/api/v1/users", "/api/v1/users/**").hasAuthority(ADMIN)

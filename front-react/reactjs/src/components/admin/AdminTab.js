@@ -9,7 +9,7 @@ import MenuMealsAdmin from './MenuMealsAdmin'
 function AdminTab(props) {
   const { handleInputChange } = props
   const { isUsersLoading, users, userUsernameSearch, handleDeleteUser, handleSearchUser } = props
-  const { isOrdersLoading, orders, orderDescription, orderTextSearch, handleCreateOrder, handleDeleteOrder, handleSearchOrder } = props
+  const { isOrdersLoading, orders, handleDeleteOrder, handleAcceptOrder } = props
   const { isMenusLoading, menus, newMenuTitle, menuTitleSearch, handleMenuSearch, handleCreateMenu,  handleDeleteMenu } = props
   const { isMealsLoading, handleMealCategoryChange, meals, mealsCategories, newMealName, newMealDescription, newMealQuantity, newMealPrice, mealNameSearch, handleMealSearch, handleCreateMeal, handleDeleteMeal } = props
   const { currentMenu, handleSelectedMenuChange, handleAddMealToCurrentMenu, handleMealChange, handleDeleteMealFromMenu } = props
@@ -36,12 +36,8 @@ function AdminTab(props) {
         <Tab.Pane loading={isOrdersLoading}>
           <OrderTable
             orders={orders}
-            orderDescription={orderDescription}
-            orderTextSearch={orderTextSearch}
-            handleInputChange={handleInputChange}
-            handleCreateOrder={handleCreateOrder}
             handleDeleteOrder={handleDeleteOrder}
-            handleSearchOrder={handleSearchOrder}
+            handleAcceptOrder={handleAcceptOrder}
           />
         </Tab.Pane>
       )

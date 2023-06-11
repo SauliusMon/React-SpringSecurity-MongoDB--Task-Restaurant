@@ -5,12 +5,9 @@ import com.saulius.restaurant.model.User;
 import com.saulius.restaurant.repo.UserRepository;
 import com.saulius.restaurant.rest.dto.UserDto;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor

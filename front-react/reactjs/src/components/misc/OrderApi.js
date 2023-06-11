@@ -23,10 +23,11 @@ export const orderApi = {
   deleteMeal,
   createMeal,
 
+  createNewOrder,
+  getMyOrders,
   getOrders,
   deleteOrder,
-  createOrder,
-  getUserMe
+  acceptOrder
 }
 
 function authenticate(username, password) {
@@ -157,35 +158,52 @@ function deleteMeal(user, mealID) {
 }
 
 
-function getOrders(user, text) {
-  const url = text ? `/api/orders?text=${text}` : '/api/orders'
-  return instance.get(url, {
-    headers: { 'Authorization': bearerAuth(user) }
-  })
-}
-
-function deleteOrder(user, orderId) {
-  return instance.delete(`/api/orders/${orderId}`, {
-    headers: { 'Authorization': bearerAuth(user) }
-  })
-}
-
-function createOrder(user, order) {
-  return instance.post('/api/orders', order, {
+function createNewOrder(user, menuID, order) {
+  return instance.post('/api/v1/order/create-order', order, {
+    params: {
+      menuID: menuID,
+      email: user.data.email,
+    },
     headers: {
-      'Content-type': 'application/json',
-      'Authorization': bearerAuth(user)
-    }
-  })
+      Authorization: bearerAuth(user),
+    },
+  });
 }
 
-function getUserMe(user) {
-  return instance.get('/api/users/me', {
+function getMyOrders (user) {
+  return instance.get('/api/v1/order/get-my-orders', {
+    params: {
+      email: user.data.email
+    },
+    headers: {
+      Authorization: bearerAuth(user),
+    },
+  });
+}
+
+function getOrders(user) {
+  return instance.get(`/api/v1/order/get-all-orders`, {
     headers: { 'Authorization': bearerAuth(user) }
   })
 }
 
-// -- Axios
+function deleteOrder(user, orderID) {
+  return instance.delete(`/api/v1/order/delete-order`, {
+    params: {
+      orderID: orderID
+    },
+    headers: { 'Authorization': bearerAuth(user) }
+  })
+}
+
+function acceptOrder(user, orderID) {
+  return instance.put(`/api/v1/order/accept-order`, null, {
+    params: {
+      orderID: orderID
+    },
+    headers: { 'Authorization': bearerAuth(user) }
+  })
+}
 
 const instance = axios.create({
   //Setups base url with localhost:8080

@@ -1,20 +1,11 @@
 package com.saulius.restaurant.model;
 
-//import jakarta.persistence.CascadeType;
-//import jakarta.persistence.Entity;
-//import jakarta.persistence.GeneratedValue;
-//import jakarta.persistence.GenerationType;
-//import jakarta.persistence.Id;
-//import jakarta.persistence.OneToMany;
-//import jakarta.persistence.Table;
-//import jakarta.persistence.UniqueConstraint;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.MongoId;
 
-import java.lang.annotation.Documented;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,8 +23,8 @@ public class User {
     private String email;
     private String role;
 
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Order> orders = new ArrayList<>();
+    @DBRef
+    private List<Order> orders = new ArrayList<>();
 
     public User(String username, String password, String name, String email, String role) {
         this.username = username;
@@ -41,5 +32,16 @@ public class User {
         this.name = name;
         this.email = email;
         this.role = role;
+    }
+
+    public void addNewOrder (Order newOrder) {
+        orders.add(newOrder);
+    }
+
+    public List<Order> getOrders() {
+        if (orders != null) {
+            return orders;
+        }
+        return new ArrayList<>();
     }
 }
